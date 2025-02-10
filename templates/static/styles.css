@@ -94,3 +94,65 @@ button[type="submit"] {
   padding: 15px;
   font-size: 1.2rem;
 }
+
+/* MEDIA QUERIES FOR RESPONSIVE DESIGN */
+
+/* Mobile (Phones) */
+@media (max-width: 575.98px) {
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  .container {
+    padding: 10px;
+  }
+
+  form {
+    padding: 1rem;
+  }
+
+  button[type="submit"] {
+    padding: 12px;
+    font-size: 1.1rem;
+  }
+
+  .form-group label {
+    font-size: 0.9rem;
+  }
+
+  .form-control {
+    font-size: 0.9rem;
+  }
+}
+
+/* Tablet */
+@media (min-width: 576px) and (max-width: 767.98px) {
+  .container {
+    max-width: 80%;
+  }
+
+  button[type="submit"] {
+    padding: 12px;
+    font-size: 1.1rem;
+  }
+}
+
+/* Small Laptop (Desktop) */
+@media (min-width: 768px) {
+  .container {
+    max-width: 60%;
+  }
+
+  h1 {
+    font-size: 2.5rem;
+  }
+
+  button[type="submit"] {
+    padding: 15px;
+    font-size: 1.2rem;
+  }
+
+  .form-control {
+    font-size: 1rem;
+  }
+}

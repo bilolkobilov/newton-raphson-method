@@ -3,6 +3,8 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="description" content="Use the Newton-Raphson method to calculate roots of functions with step-by-step iterations and a dynamic graph.">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Newton-Raphson Method</title>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -39,13 +41,13 @@
         <table class="table table-bordered table-hover animate__animated animate__fadeInUp">
             <thead class="thead-light">
                 <tr>
-                    <th>Iteration</th>
-                    <th>\( x_n \)</th>
-                    <th>\( f(x_n) \)</th>
-                    <th>\( f'(x_n) \)</th>
-                    <th>\( x_{n+1} \)</th>
-                    <th>Error</th>
-                    <th>Formula</th>
+                    <th scope="col">Iteration</th>
+                    <th scope="col">\( x_n \)</th>
+                    <th scope="col">\( f(x_n) \)</th>
+                    <th scope="col">\( f'(x_n) \)</th>
+                    <th scope="col">\(\ x_{n+1} \)</th>
+                    <th scope="col">Error</th>
+                    <th scope="col">Formula</th>
                 </tr>
             </thead>
             <tbody>
@@ -77,11 +79,12 @@
 
     <!-- Dynamic Animated Graph -->
     <h2 class="mt-4 text-center">Graph of the function and its iteration points: \( f(x) = {{ function_str | safe }} \)</h2>
-    <div id="graph" class="mt-3"></div>
+    <div id="loading-indicator" style="display:none;">Loading graph...</div>
+    <div id="graph" class="mt-3" loading="lazy"></div>
 
     <!-- Code Implementation -->
     <h2 class="mt-4 text-center">Code Implementation of the Newton-Raphson Formula</h2>
-    <pre class="bg-light p-3 border" style="font-size: 16px; color: #333; line-height: 1.6;">
+    <pre class="bg-light p-3 border code-snippet">
 <span style="color: #007bff;"># Initialize the starting point and error tolerance</span>
 current_x = x0  <span style="color: #28a745;"># Initial guess</span>
 error = float('inf')  <span style="color: #28a745;"># Set the error to infinity initially</span>
@@ -168,15 +171,21 @@ print(<span style="color: #ff073a;">"Final solution:", current_x</span>)
             }
         ];
 
-        // Layout with a Play button for the animation
+        // Define the layout
         var layout = {
+            title: 'Graph of f(x) and Iterations',
             xaxis: { title: 'x' },
             yaxis: { title: 'f(x)' },
         };
 
-        // Create the plot with frames passed in the configuration
+        // Plot the graph with animation frames
         Plotly.newPlot('graph', data, layout, { frames: frames });
     </script>
+
+    <!-- Bootstrap and jQuery JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 
 </html>

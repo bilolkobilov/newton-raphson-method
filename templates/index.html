@@ -4,6 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Newton-Raphson Calculator</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <!-- Bootstrap CSS for responsive design -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <!-- Animate.css for animations -->
@@ -27,9 +28,15 @@
   <form method="POST" action="/" class="animate__animated animate__fadeInUp">
     <div class="form-group">
       <label for="function"><strong>Enter function \( f(x) \):</strong></label>
-      <input type="text" name="function" id="function" class="form-control" placeholder="e.g. x**2 - 4x + 4" required>
+      <input type="text" name="function" id="function" class="form-control" placeholder="e.g. x^2 - 4x + 4" required>
       <small class="form-text text-muted">
-        You can enter functions like <code>x**2 - 4x + 4</code> (implicit multiplication is handled automatically).
+        You can enter functions like <code>x^2 - 4x + 4</code>, <code>ln(x)</code>, <code>log(x)</code>, or <code>log10(x)</code>.
+      </small>
+      <small class="form-text text-muted">
+        Allowed functions: <code>sin(x)</code>, <code>cos(x)</code>, <code>tan(x)</code>, <code>sqrt(x)</code>, <code>exp(x)</code>, <code>abs(x)</code> and constants like <code>pi</code> and <code>E</code>.
+      </small>
+      <small class="form-text text-muted">
+        This calculator accepts any differentiable function \( f(x) \).
       </small>
     </div>
     <div class="form-group">
@@ -39,12 +46,19 @@
     <div class="form-group">
       <label for="epsilon"><strong>Enter epsilon (tolerance, optional):</strong></label>
       <input type="text" name="epsilon" id="epsilon" class="form-control" placeholder="e.g. 0.001">
-      <small class="form-text text-muted">
-        If left empty, a default value of <strong>0.001</strong> will be used.
-      </small>
     </div>
-    <button type="submit" class="btn btn-primary btn-block">Calculate</button>
+    <button type="submit" class="btn btn-primary btn-block" id="submitButton">
+      Calculate
+      <span id="spinner" class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display:none;"></span>
+    </button>
   </form>
+
+  <script>
+    document.querySelector("form").onsubmit = function () {
+      document.getElementById("spinner").style.display = "inline-block";
+      document.getElementById("submitButton").disabled = true;
+    };
+  </script>
 </body>
 
 </html>
