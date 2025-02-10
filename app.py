@@ -70,6 +70,7 @@ def index():
         function_str = request.form.get("function", "").strip()
 
         function_str = function_str.replace("−", "-")  # Fix Unicode minus sign
+        function_str = function_str.replace("X", "x")  # Convert 'X' to 'x' for consistency
 
         if not function_str:
             return render_template("index.html", error="Function input cannot be empty.")
