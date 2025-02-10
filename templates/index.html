@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Newton-Raphson Calculator</title>
+  <!-- Bootstrap CSS for responsive design -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <!-- Animate.css for animations -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="/static/styles.css">
+  <!-- MathJax for rendering math formulas -->
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+</head>
+
+<body class="container mt-5">
+  <h1 class="mb-4 animate__animated animate__fadeInDown text-center text-primary">Newton-Raphson Method Calculator</h1>
+  
+  {% if error %}
+    <div class="alert alert-danger animate__animated animate__fadeInUp">{{ error }}</div>
+  {% endif %}
+  
+  <form method="POST" action="/" class="animate__animated animate__fadeInUp">
+    <div class="form-group">
+      <label for="function"><strong>Enter function \( f(x) \):</strong></label>
+      <input type="text" name="function" id="function" class="form-control" placeholder="e.g. x**2 - 4x + 4" required>
+      <small class="form-text text-muted">
+        You can enter functions like <code>x**2 - 4x + 4</code> (implicit multiplication is handled automatically).
+      </small>
+    </div>
+    <div class="form-group">
+      <label for="x0"><strong>Enter initial guess (x₀):</strong></label>
+      <input type="text" name="x0" id="x0" class="form-control" placeholder="e.g. 1" required>
+    </div>
+    <div class="form-group">
+      <label for="epsilon"><strong>Enter epsilon (tolerance, optional):</strong></label>
+      <input type="text" name="epsilon" id="epsilon" class="form-control" placeholder="e.g. 0.001">
+      <small class="form-text text-muted">
+        If left empty, a default value of <strong>0.001</strong> will be used.
+      </small>
+    </div>
+    <button type="submit" class="btn btn-primary btn-block">Calculate</button>
+  </form>
+</body>
+
+</html>

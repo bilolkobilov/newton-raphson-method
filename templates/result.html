@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Newton-Raphson Method</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Animate.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/static/styles.css">
+    <!-- MathJax for rendering math formulas -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <!-- Plotly JS for dynamic graphs -->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+
+<body class="container mt-5">
+    <h1 class="mb-4 animate__animated animate__fadeInDown text-center text-primary">Newton-Raphson Method Calculator</h1>
+    <div class="mt-4">
+        <a href="/" class="btn btn-outline-primary try-again-btn">Try another problem</a>
+    </div>
+
+    <div class="alert alert-success text-center mt-4">
+        <strong>Final solution:</strong> <span class="font-weight-bold">{{ solution }}</span>
+    </div>
+
+    <h2 class="mt-4 text-center">Newton-Raphson Formula</h2>
+    <p class="text-center">
+        \[
+        x_{n+1} = x_n - \frac{f(x_n)}{f'(x_n)}
+        \]
+    </p>
+
+    <!-- Step-by-step table -->
+    <div class="table-responsive mt-4">
+        <table class="table table-bordered table-hover animate__animated animate__fadeInUp">
+            <thead class="thead-light">
+                <tr>
+                    <th>Iteration</th>
+                    <th>\( x_n \)</th>
+                    <th>\( f(x_n) \)</th>
+                    <th>\( f'(x_n) \)</th>
+                    <th>\( x_{n+1} \)</th>
+                    <th>Error</th>
+                    <th>Formula</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for step in steps %}
+                <tr>
+                    <td>{{ step.iteration }}</td>
+                    <td>\( {{ "%.6f"|format(step.x_n) }} \)</td>
+                    <td>\( {{ "%.6f"|format(step.f_x) }} \)</td>
+                    <td>\( {{ "%.6f"|format(step.df_x) }} \)</td>
+                    <td>\( {{ "%.6f"|format(step.next_x) }} \)</td>
+                    <td>\( {{ "%.6f"|format(step.error) }} \)</td>
+                    <td>\( x_{ {{ step.iteration + 1 }} } = {{ "%.6f"|format(step.x_n) }} - \frac{ {{ "%.6f"|format(step.f_x) }} }{ {{ "%.6f"|format(step.df_x) }} } = {{ "%.6f"|format(step.next_x) }} \)</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="7" class="text-center">
+                        <strong>Total Iterations: </strong>{{ steps|length }}
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+    <script>
+        MathJax.typeset(); // Ensure MathJax renders formulas after loading
+    </script>
+
+    <!-- Dynamic Animated Graph -->
+    <h2 class="mt-4 text-center">Graph of the function and its iteration points: \( f(x) = {{ function_str | safe }} \)</h2>
+    <div id="graph" class="mt-3"></div>
+
+    <!-- Code Implementation -->
+    <h2 class="mt-4 text-center">Code Implementation of the Newton-Raphson Formula</h2>
+    <pre class="bg-light p-3 border" style="font-size: 16px; color: #333; line-height: 1.6;">
+<span style="color: #007bff;"># Initialize the starting point and error tolerance</span>
+current_x = x0  <span style="color: #28a745;"># Initial guess</span>
+error = float('inf')  <span style="color: #28a745;"># Set the error to infinity initially</span>
+
+<span style="color: #007bff;"># Start the iteration loop</span>
+while error > epsilon:  <span style="color: #28a745;"># Continue until the error is below the tolerance</span>
+    <span style="color: #007bff;"># Calculate the value of the function and its derivative at current_x</span>
+    current_f = f(current_x)  <span style="color: #17a2b8;"># f(xₙ)</span>
+    current_df = df(current_x)  <span style="color: #17a2b8;"># f'(xₙ)</span>
+    
+    <span style="color: #007bff;"># Check if the derivative is zero (to avoid division by zero)</span>
+    if current_df == 0:
+        print(<span style="color: #ff073a;">"Derivative is zero. Choose a different initial guess."</span>)
+        break  <span style="color: #ff073a;"># Exit the loop if derivative is zero</span>
+    
+    <span style="color: #007bff;"># Apply the Newton-Raphson formula to find the next x value</span>
+    next_x = current_x - current_f / current_df  <span style="color: #17a2b8;"># xₙ₊₁ = xₙ - f(xₙ)/f'(xₙ)</span>
+    
+    <span style="color: #007bff;"># Calculate the error between the current and next approximation</span>
+    error = abs(next_x - current_x)  <span style="color: #17a2b8;"># Absolute difference</span>
+    
+    <span style="color: #007bff;"># Update the current_x for the next iteration</span>
+    current_x = next_x
+    
+    <span style="color: #007bff;"># Print the step details (optional)</span>
+    print(f"Iteration {iteration}: xₙ = {current_x:.6f}, f(xₙ) = {current_f:.6f}, f'(xₙ) = {current_df:.6f}, xₙ₊₁ = {next_x:.6f}, Error = {error:.6f}")
+    
+    <span style="color: #007bff;"># Increment the iteration counter</span>
+    iteration += 1
+
+<span style="color: #007bff;"># Final result after convergence</span>
+print(<span style="color: #ff073a;">"Final solution:", current_x</span>)
+</pre>
+
+    <!-- Explanation Section -->
+    <p><strong>Explanation:</strong></p>
+    <ul>
+        <li><span style="color: #28a745;"># Initialization:</span> We initialize the <code>current_x</code> variable with the initial guess (x₀) and set the <code>error</code> to infinity to start the iteration loop.</li>
+        <li><span style="color: #17a2b8;"># f(xₙ) and f'(xₙ):</span> In each iteration, we calculate the value of the function <code>f(current_x)</code> and its derivative <code>f'(current_x)</code> to apply the Newton-Raphson formula.</li>
+        <li><span style="color: #ff073a;"># Zero Derivative Check:</span> If the derivative is zero, we print a message and break the loop to avoid division by zero errors.</li>
+        <li><span style="color: #17a2b8;"># Newton-Raphson Formula:</span> We compute the next approximation <code>next_x</code> using the formula <code>xₙ₊₁ = xₙ - f(xₙ)/f'(xₙ)</code>.</li>
+        <li><span style="color: #28a745;"># Error Calculation:</span> The error is calculated as the absolute difference between the current and the next approximation to check convergence.</li>
+        <li><span style="color: #007bff;"># Iteration Count:</span> We increment the iteration counter <code>iteration</code> to track the number of iterations until the error is less than the tolerance (epsilon).</li>
+        <li><span style="color: #ff073a;"># Final Result:</span> Once the error is small enough, the loop terminates, and we print the final solution, which is the root of the function.</li>
+    </ul>
+
+    <!-- Plotly Animation Script -->
+    <script>
+        // Retrieve data passed from Flask using the tojson filter
+        var x_vals = {{ x_vals| tojson }};
+        var y_vals = {{ y_vals| tojson }};
+        var iteration_points = {{ iteration_points| tojson }};
+        var iteration_y = {{ iteration_y| tojson }};
+        var functionStr = "{{ function_str }}";
+
+        // Create animation frames: Each frame shows an increasing number of iteration points
+        var frames = [];
+        for (var i = 0; i < iteration_points.length; i++) {
+            frames.push({
+                name: 'frame' + i,
+                data: [{
+                    // Only updating the iteration scatter trace (index 1 in data array)
+                    x: iteration_points.slice(0, i + 1),
+                    y: iteration_y.slice(0, i + 1)
+                }]
+            });
+        }
+
+        // Define the initial data: the static function curve and the first iteration point
+        var data = [
+            {
+                x: x_vals,
+                y: y_vals,
+                mode: 'lines',
+                name: 'f(x)',
+                line: { color: 'blue' }
+            },
+            {
+                x: iteration_points.slice(0, 1),
+                y: iteration_y.slice(0, 1),
+                mode: 'markers',
+                name: 'Iterations',
+                marker: { color: 'red', size: 10 }
+            }
+        ];
+
+        // Layout with a Play button for the animation
+        var layout = {
+            xaxis: { title: 'x' },
+            yaxis: { title: 'f(x)' },
+        };
+
+        // Create the plot with frames passed in the configuration
+        Plotly.newPlot('graph', data, layout, { frames: frames });
+    </script>
+</body>
+
+</html>
