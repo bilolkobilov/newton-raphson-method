@@ -1,0 +1,21 @@
+# Python bytecode files
+*.pyc
+*.pyo
+
+# Virtual environments
+venv/
+env/
+
+# Environment variables file
+.env
+
+# IDEs and editors (VSCode, PyCharm, etc.)
+.vscode/
+.idea/
+
+# Other files that should not be tracked
+*.log
+*.sqlite3
+
+# Node modules (if using any JavaScript packages)
+node_modules/
