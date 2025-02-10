@@ -1,0 +1,4 @@
+Flask
+plotly
+numpy
+sympy
