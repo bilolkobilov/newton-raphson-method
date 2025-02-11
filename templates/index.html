@@ -8,32 +8,48 @@
   <!-- Bootstrap CSS for responsive design -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <!-- Animate.css for animations -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
   <!-- Custom CSS -->
   <link rel="stylesheet" href="/static/styles.css">
   <!-- MathJax for rendering math formulas -->
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-  <script id="MathJax-script" async
-    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
   </script>
 </head>
 
 <body class="container mt-5">
   <h1 class="mb-4 animate__animated animate__fadeInDown text-center text-primary">Newton-Raphson Method Calculator</h1>
-  
+
   {% if error %}
-    <div class="alert alert-danger animate__animated animate__fadeInUp">{{ error }}</div>
+  <div class="alert alert-danger animate__animated animate__fadeInUp">{{ error }}</div>
   {% endif %}
-  
-  <form method="POST" action="/" class="animate__animated animate__fadeInUp">
+
+  <form method="POST" action="/" class="animate__animated animate__fadeInUp" onsubmit="return validateForm()">
     <div class="form-group">
       <label for="function"><strong>Enter function \( f(x) \):</strong></label>
-      <input type="text" name="function" id="function" class="form-control" placeholder="e.g. x^2 - 4x + 4" required>
+      <div class="d-flex">
+        <input type="text" name="function" id="function" class="form-control" placeholder="e.g. x^2 - 4x + 4" required>
+        <select id="functionDropdown" class="form-control ml-2" onchange="insertFunction()">
+          <option value="">Sample functions</option>
+          <option value="x^2 - 4*x + 4" data-latex="x^2 - 4x + 4">x² - 4x + 4</option>
+          <option value="x^3 - 6*x^2 + 11*x - 6" data-latex="x^3 - 6x^2 + 11x - 6">x³ - 6x² + 11x - 6</option>
+          <option value="x^2 + sin(x)" data-latex="x^2 + \sin(x)">x² + sin(x)</option>
+          <option value="exp(x) - x" data-latex="\exp(x) - x">exp(x) - x</option>
+          <option value="abs(x)" data-latex="|x|">|x|</option>
+          <option value="x^2 - cos(x)" data-latex="x^2 - \cos(x)">x² - cos(x)</option>
+          <option value="log(x)" data-latex="\ln(x)">ln(x)</option>
+          <option value="sqrt(x) + 1" data-latex="\sqrt{x} + 1">√(x) + 1</option>
+          <option value="x^2 + x + 1" data-latex="x^2 + x + 1">x² + x + 1</option>
+        </select>
+      </div>
       <small class="form-text text-muted">
-        You can enter functions like <code>x^2 - 4x + 4</code>, <code>ln(x)</code>, <code>log(x)</code>, or <code>log10(x)</code>.
+        You can enter functions like <code>x^2 - 4x + 4</code>, <code>ln(x)</code>, <code>log(x)</code>, or
+        <code>log10(x)</code>.
       </small>
       <small class="form-text text-muted">
-        Allowed functions: <code>sin(x)</code>, <code>cos(x)</code>, <code>tan(x)</code>, <code>sqrt(x)</code>, <code>exp(x)</code>, <code>abs(x)</code> and constants like <code>pi</code> and <code>E</code>.
+        Allowed functions: <code>sin(x)</code>, <code>cos(x)</code>, <code>tan(x)</code>, <code>sec(x)</code>,
+        <code>cosec(x)</code>, <code>cot(x)</code>, <code>sqrt(x)</code>, <code>exp(x)</code>, <code>abs(x)</code> and
+        constants like <code>pi</code> and <code>E</code>.
       </small>
       <small class="form-text text-muted">
         This calculator accepts any differentiable function \( f(x) \).
@@ -49,11 +65,23 @@
     </div>
     <button type="submit" class="btn btn-primary btn-block" id="submitButton">
       Calculate
-      <span id="spinner" class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display:none;"></span>
+      <span id="spinner" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"
+        style="display:none;"></span>
     </button>
   </form>
 
   <script>
+    // Function to insert selected function into the input field
+    function insertFunction() {
+      var dropdown = document.getElementById("functionDropdown");
+      var functionInput = document.getElementById("function");
+      var selectedFunction = dropdown.value;
+
+      if (selectedFunction) {
+        functionInput.value = selectedFunction;
+      }
+    }
+
     document.querySelector("form").onsubmit = function () {
       document.getElementById("spinner").style.display = "inline-block";
       document.getElementById("submitButton").disabled = true;

@@ -21,6 +21,9 @@ allowed_locals = {
     'sin': sp.sin,
     'cos': sp.cos,
     'tan': sp.tan,
+    'sec': lambda x: 1/sp.cos(x),
+    'cosec': lambda x: 1/sp.sin(x),
+    'cot': lambda x: 1/sp.tan(x),
     'sqrt': sp.sqrt,
     'exp': sp.exp,
     'abs': sp.Abs,
@@ -29,7 +32,6 @@ allowed_locals = {
 }
 
 transformations = standard_transformations + (implicit_multiplication_application, convert_xor)
-
 
 def newton_raphson(f, df, x0, epsilon=0.001, max_iterations=100):
     """Performs the Newton-Raphson method to find a root of f(x)."""
@@ -71,6 +73,7 @@ def index():
 
         function_str = function_str.replace("−", "-")  # Fix Unicode minus sign
         function_str = function_str.replace("X", "x")  # Convert 'X' to 'x' for consistency
+        function_str = function_str.lower()  # Convert the entire input to lowercase
 
         if not function_str:
             return render_template("index.html", error="Function input cannot be empty.")
@@ -79,7 +82,7 @@ def index():
             x = sp.symbols('x')
             f_expr = parse_expr(function_str, local_dict=allowed_locals, transformations=transformations)
         except (SyntaxError, ValueError, TypeError) as e:
-            return render_template("index.html", error=f"Invalid function expression: {str(e)}")
+            return render_template("index.html", error=f"Invalid function expression: Check syntax or use supported functions like sin(x), cos(x), etc. Details: {str(e)}")
 
         f = sp.lambdify(x, f_expr, 'numpy')
         df_expr = sp.diff(f_expr, x)
@@ -128,7 +131,6 @@ def index():
         )
 
     return render_template("index.html")
-
 
 if __name__ == "__main__":
     app.run(debug=True)
